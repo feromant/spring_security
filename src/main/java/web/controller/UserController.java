@@ -79,6 +79,7 @@ public class UserController {
 //		model.addAttribute("roles", roleService.getAllRoles());
 		if (roles != null) {
 			for (Role role : roles) {
+
 //				roles.add(roleService.getRoleByType(role.getRole()));
 				user.addRole(role);
 			}

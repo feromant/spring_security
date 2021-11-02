@@ -14,6 +14,11 @@ public class RoleServiceImpl implements RoleService {
     RoleDao dao;
 
     @Override
+    public void saveRole(Role role) {
+        dao.addRole(role);
+    }
+
+    @Override
     public Role getRoleById(Long id) {
         return dao.getRoleById(id);
     }
