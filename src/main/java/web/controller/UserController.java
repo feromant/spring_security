@@ -79,7 +79,12 @@ public class UserController {
 //		model.addAttribute("roles", roleService.getAllRoles());
 		if (roles != null) {
 			for (Role role : roles) {
-
+				if ("ADMIN".equals(role.getRole())) {
+					role.setId(1L);
+				}
+				else if ("USER".equals(role.getRole())) {
+					role.setId(2L);
+				}
 //				roles.add(roleService.getRoleByType(role.getRole()));
 				user.addRole(role);
 			}
@@ -104,6 +109,12 @@ public class UserController {
 //		model.addAttribute("roles", user.getRoles());
 		if (roles != null) {
 			for (Role role : roles) {
+				if ("ADMIN".equals(role.getRole())) {
+					role.setId(1L);
+				}
+				else if ("USER".equals(role.getRole())) {
+					role.setId(2L);
+				}
 				user.addRole(role);
 			}
 		}
