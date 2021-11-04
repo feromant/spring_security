@@ -5,9 +5,10 @@
     <title>Update user</title>
 </head>
 <body>
+<div align="center">
 <h1>Update User</h1>
 <br/>
-<form th:method="PUT" th:action="@{/{id}(id=${user.id})}" th:object="${user}">
+<form th:method="PUT" th:action="@{/admin/edit/{id}(id=${user.id})}" th:object="${user}">
     <label for="firstName">First name: </label>
     <input type="text" th:field="*{firstName}" id="firstName"/>
     <br><br>
@@ -31,5 +32,6 @@
     <br><br>
     <input type="submit" value="Update User">
 </form>
+</div>
 </body>
 </html>

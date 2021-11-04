@@ -12,7 +12,6 @@ import web.dao.UserDao;
 import web.model.Role;
 import web.model.User;
 
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,7 +30,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void addUser(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        dao.addUser(user);
+        dao.saveUser(user);
     }
 
     @Transactional(readOnly = true)
@@ -80,7 +79,7 @@ public class UserServiceImpl implements UserService {
         List<GrantedAuthority> authorities = new ArrayList<>();
 
         for(Role role : user.getRoles()){
-            authorities.add(new SimpleGrantedAuthority("ROLE_"+role.getRole()));
+            authorities.add(new SimpleGrantedAuthority("ROLE_" + role.getRole()));
         }
         return authorities;
     }

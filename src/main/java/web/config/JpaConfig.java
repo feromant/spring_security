@@ -19,13 +19,13 @@ import java.util.Properties;
 
 @Configuration
 @PropertySource("classpath:db.properties")
-@EnableTransactionManagement(proxyTargetClass = true)
+@EnableTransactionManagement (proxyTargetClass = true)
 public class JpaConfig {
 
     @Autowired
     private Environment env;
 
-    @Bean
+    @Bean(name = "dataSource")
     public DataSource getDataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName(env.getProperty("db.driver"));
@@ -62,7 +62,7 @@ public class JpaConfig {
         return entityManagerFactory;
     }
 
-    @Bean
+    @Bean(name = "transactionManager")
     public PlatformTransactionManager getTransactionManager(EntityManagerFactory entityManagerFactory) {
         JpaTransactionManager transactionManager = new JpaTransactionManager();
         transactionManager.setEntityManagerFactory(entityManagerFactory);

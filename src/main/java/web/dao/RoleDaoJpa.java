@@ -2,22 +2,24 @@ package web.dao;
 
 import org.springframework.stereotype.Repository;
 import web.model.Role;
-import web.model.User;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.PersistenceContextType;
 import java.util.List;
 
 @Repository
 public class RoleDaoJpa implements RoleDao {
 
-    @PersistenceContext(unitName = "entityManagerFactory")
+    @PersistenceContext
     private EntityManager entityManager;
 
     @Override
-    public void addRole(Role role) {
-        entityManager.persist(role);
+    public void saveRole(Role role) {
+        if (role.getId() == null) {
+            entityManager.persist(role);
+        } else {
+            entityManager.merge(role);
+        }
     }
 
     @Override

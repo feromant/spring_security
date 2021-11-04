@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <head>
     <meta charset="utf-8">
     <title>Users List</title>
@@ -9,14 +9,12 @@
 <br/>
 <div align="center">
     <div sec:authorize="isAuthenticated()">
-        Welcome <b><span sec:authentication="name">Username</span></b>
+        Welcome <b><span sec:authentication="name"></span></b>
         &nbsp;
-        <span sec:authentication="principal.authorities">Roles</span>
+        <span sec:authentication="principal.authorities"></span>
     </div>
     <h2>Users List</h2>
-</div>
-<br/>
-<div align="center">
+    <br/>
     <table border="1" cellpadding="10">
         <tr>
             <th>ID</th>
@@ -36,26 +34,22 @@
             <td th:text="${user.email}">...</td>
             <td th:text="${user.roles}">...</td>
             <td>
-                <form th:method="GET" th:action="@{/{id}/edit(id=${user.id})}">
+                <form th:method="GET" th:action="@{/admin/edit/{id}(id=${user.id})}">
                     <input type="submit" value="Edit"/>
                 </form>
             </td>
             <td>
-                <form th:method="DELETE" th:action="@{/{id}(id=${user.id})}">
+                <form th:method="DELETE" th:action="@{/admin/delete/{id}(id=${user.id})}">
                     <input type="submit" value="Delete"/>
                 </form>
             </td>
         </tr>
     </table>
-</div>
-<br/><br/>
-<div align="center">
-    <h3><a href="/new">Add new user</a></h3>
-</div>
-<br/><br/>
-<p>
-<div align="center">
-    <form th:method="GET" action="/logout">
+    <br/><br/>
+    <h3><a href="/admin/new">Add new user</a></h3>
+    <br/><br/>
+    <p>
+    <form th:method="GET" th:action="@{/logout}">
         <input type="submit" value="Logout">
     </form>
 </div>

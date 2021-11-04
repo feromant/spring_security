@@ -11,13 +11,11 @@ import web.service.RoleService;
 import web.service.UserService;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 @Controller
 @RequestMapping("/")
-//@SessionAttributes("roles")
 public class UserController {
 
 	@Autowired
@@ -43,14 +41,12 @@ public class UserController {
 
 	@GetMapping("/admin")
 	public String getAllUsers(Model model) {
-//		model.addAttribute("roles", roleService.getAllRoles());
 		model.addAttribute("users", userService.getAllUsers());
 		return "index";
 	}
 
 	@GetMapping("user/{id}")
 	public String getUserById(@PathVariable("id") Long id, Model model) {
-//		model.addAttribute("roles", roleService.getAllRoles());
 		model.addAttribute("user", userService.getUserById(id));
 		return "user";
 	}
@@ -60,23 +56,16 @@ public class UserController {
 		return roleService.getAllRoles();
 	}
 
-	@GetMapping("new")
+	@GetMapping("/admin/new")
 	public String addUser(Model model) {
-//		model.addAllAttributes(roleService.getAllRoles());
 		model.addAttribute("user", new User());
 		return "new";
 	}
 
-	@PostMapping("/admin")
+	@PostMapping("/admin/new")
 	public String addUser(@ModelAttribute("user") User user,
-						  @RequestParam(value = "roles") Set<Role> roles,
-						  Model model) {
+						  @RequestParam(value = "roles") Set<Role> roles) {
 
-//		user.setRoles(user.getRoles().stream()
-//				.map(role -> roleService.getRoleByType(role.getRole()))
-//				.collect(Collectors.toSet()));
-//		user.setRoles(new HashSet<>());
-//		model.addAttribute("roles", roleService.getAllRoles());
 		if (roles != null) {
 			for (Role role : roles) {
 				if ("ADMIN".equals(role.getRole())) {
@@ -85,28 +74,22 @@ public class UserController {
 				else if ("USER".equals(role.getRole())) {
 					role.setId(2L);
 				}
-//				roles.add(roleService.getRoleByType(role.getRole()));
 				user.addRole(role);
 			}
 		}
-//		user.setRoles(roles);
 		userService.addUser(user);
 		return "redirect:/admin";
 	}
 
-	@GetMapping("/{id}/edit")
+	@GetMapping("/admin/edit/{id}")
 	public String updateUserById(@PathVariable("id") Long id,  Model model) {
 		model.addAttribute("user", userService.getUserById(id));
-//		model.addAttribute("roles", roleService.getAllRoles());
 		return "edit";
 	}
 
-	@PutMapping("/{id}")
+	@PutMapping("/admin/edit/{id}")
 	public String updateUser(@ModelAttribute("user") User user,
-							 @RequestParam(value = "roles") Set<Role> roles,
-							 Model model) {
-//		roles = user.getRoles();
-//		model.addAttribute("roles", user.getRoles());
+							 @RequestParam(value = "roles") Set<Role> roles) {
 		if (roles != null) {
 			for (Role role : roles) {
 				if ("ADMIN".equals(role.getRole())) {
@@ -121,7 +104,7 @@ public class UserController {
 		userService.updateUser(user);
 		return "redirect:/admin";
 	}
-	@DeleteMapping("/{id}")
+	@DeleteMapping("/admin/delete/{id}")
 	public String deleteUserById(@PathVariable("id") Long id) {
 		userService.deleteUserById(id);
 		return "redirect:/admin";

@@ -1,11 +1,19 @@
 package web.model;
 
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.Table;
+
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
@@ -18,10 +26,10 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name", unique = true)
+    @Column(name = "name", unique = true, nullable = false)
     private String firstName;
 
-    @Column(name = "last_name")
+    @Column(name = "surname")
     private String lastName;
 
     @Column(name = "age")
@@ -30,14 +38,13 @@ public class User implements UserDetails {
     @Column(name = "email")
     private String email;
 
-    @Column(name = "password")
+    @Column(name = "password", nullable = false)
     private String password;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name = "users_roles",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
-    @Fetch(value = FetchMode.JOIN)
     private Set<Role> roles = new HashSet<>();
 
     public User() {
@@ -63,7 +70,7 @@ public class User implements UserDetails {
     public String getFirstName() { return firstName; }
 
     @Override
-    public String getUsername() { return firstName; }
+    public String getUsername() { return getFirstName(); }
 
     public void setFirstName(String firstName) {
         this.firstName = firstName;
@@ -99,9 +106,7 @@ public class User implements UserDetails {
     }
 
     @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return roles;
-    }
+    public Collection<? extends GrantedAuthority> getAuthorities() { return getRoles(); }
 
     public Set<Role> getRoles() { return roles; }
 

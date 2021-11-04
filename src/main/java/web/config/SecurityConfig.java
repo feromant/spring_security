@@ -58,22 +58,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 //выклчаем кроссдоменную секьюрность (на этапе обучения неважна)
                 .and().csrf().disable();
 
-//        http
-//                // делаем страницу регистрации недоступной для авторизированных пользователей
-//                .authorizeRequests()
-//                //страницы аутентификаци доступна всем
-//
-//                // защищенные URL
-//                .antMatchers("/hello").access("hasAuthority('ADMIN')")
-//                .antMatchers("/index").access("hasAuthority('ADMIN')")
-//                .antMatchers("/delete").access("hasAuthority('ADMIN')")
-//                .antMatchers("/edit").access("hasAuthority('USER')")
-//                .antMatchers("/new").access("hasAuthority('ADMIN')")
-//                .anyRequest().authenticated();
         http.authorizeRequests()
-                .antMatchers("/admin/**", "/new").hasRole("ADMIN")
+                .antMatchers("/admin/**").hasRole("ADMIN")
                 .antMatchers("/user/**").hasAnyRole("ADMIN", "USER")
-                .antMatchers("/login").anonymous()
+                .antMatchers("/login", "/hello").anonymous()
                 .antMatchers("/**").authenticated()
                 .and().exceptionHandling().accessDeniedPage("/Access_Denied");
     }
